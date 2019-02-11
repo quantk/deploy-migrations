@@ -71,9 +71,6 @@ class RunDeployMigrationsCommand extends BaseDeployMigrationCommand
 
         $migrationCollection = $instantiator->run();
 
-        $currentCommand   = null;
-        $currentMigration = null;
-
         $migrations = $migrationCollection->filter(function (DeployMigration $migration) {
             $tableQuery      = $this->getTableQuery();
             $alreadyExecuted = $tableQuery->where('migration', '=', get_class($migration))->count() > 0;
