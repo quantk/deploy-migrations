@@ -4,8 +4,8 @@
 namespace Quantick\DeployMigration\Lib\Service;
 
 
-use Quantick\Component\Finder\SplFileInfo;
 use Quantick\DeployMigration\Lib\DeployMigration;
+use Symfony\Component\Finder\SplFileInfo;
 
 class Instantiator
 {
