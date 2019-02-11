@@ -28,7 +28,7 @@ if (!function_exists('config')) {
      *
      * @param  array|string $key
      * @param  mixed $default
-     * @return mixed|\Illuminate\Config\Repository
+     * @return mixed|\Illuminate\Config\Repository|string
      */
     function config($key = null, $default = null)
     {
@@ -37,7 +37,9 @@ if (!function_exists('config')) {
         }
 
         if (is_array($key)) {
-            return app('config')->set($key);
+            app('config')->set($key);
+
+            return;
         }
 
         return app('config')->get($key) ?? $default;
@@ -54,5 +56,18 @@ if (!function_exists('config_path')) {
     function config_path($path = '')
     {
         return app()->make('path.config') . ($path ? DIRECTORY_SEPARATOR . $path : $path);
+    }
+}
+
+if (!function_exists('base_path')) {
+    /**
+     * Get the path to the base of the install.
+     *
+     * @param  string $path
+     * @return string
+     */
+    function base_path($path = '')
+    {
+        return app()->basePath() . ($path ? DIRECTORY_SEPARATOR . $path : $path);
     }
 }

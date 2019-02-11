@@ -45,8 +45,6 @@ class Migrator
      */
     public function run(Collection $migrations, OutputStyle $deployCommandOutput)
     {
-        $currentMigration = null;
-        $currentCommand   = null;
         foreach ($migrations as $migration) {
             $outputs = [];
 
