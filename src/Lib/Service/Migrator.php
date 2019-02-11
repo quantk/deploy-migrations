@@ -65,9 +65,9 @@ class Migrator
                 $commands         = $migration->getCommands();
 
                 foreach ($commands as $commandName => $arguments) {
+                    $currentCommand = $commandName;
                     /** @var Command $command */
                     $command        = $this->container->get($commandName);
-                    $currentCommand = $commandName;
                     $command->setLaravel($this->container);
 
                     $input  = new ArrayInput($arguments);
