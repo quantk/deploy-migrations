@@ -44,3 +44,8 @@ class Version20190211093348 extends \Quantick\DeployMigration\Lib\DeployMigratio
     }
 }
 ```
+
+3. Run
+```
+php artisan deploy:migrate
+```

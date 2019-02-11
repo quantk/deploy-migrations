@@ -13,7 +13,7 @@ use Quantick\DeployMigration\Lib\Service\Migrator;
 
 class RunDeployMigrationsCommand extends BaseDeployMigrationCommand
 {
-    protected $signature = 'quantick:deploy-migrate:run';
+    protected $signature = 'deploy:migrate';
 
     protected $description = 'Run migrate commands in deploy time';
     /**
