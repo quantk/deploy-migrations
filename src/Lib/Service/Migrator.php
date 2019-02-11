@@ -67,7 +67,7 @@ class Migrator
                 foreach ($commands as $commandName => $arguments) {
                     /** @var Command $command */
                     $command        = $this->container->get($commandName);
-                    $currentCommand = $command;
+                    $currentCommand = $commandName;
                     $command->setLaravel($this->container);
 
                     $input  = new ArrayInput($arguments);
@@ -103,7 +103,7 @@ class Migrator
                 $this->connection->commit();
             } catch (\Throwable $e) {
                 $migrationClass = $currentMigration !== null ? get_class($currentMigration) : null;
-                $commandClass   = $currentCommand !== null ? get_class($currentCommand) : null;
+                $commandClass   = $currentCommand;
 
                 $deployCommandOutput->writeln('');
                 $deployCommandOutput->writeln(sprintf('<error>Error during %s migration; %s command</error>', $migrationClass, $commandClass));
