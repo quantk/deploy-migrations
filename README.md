@@ -1,6 +1,7 @@
 # Laravel package for execute one-time commands in deploy time
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/drumser/deploy-migrations/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/drumser/deploy-migrations/?branch=master)
 [![Build Status](https://scrutinizer-ci.com/g/drumser/deploy-migrations/badges/build.png?b=master)](https://scrutinizer-ci.com/g/drumser/deploy-migrations/build-status/master)
+[![codecov](https://codecov.io/gh/drumser/deploy-migrations/branch/master/graph/badge.svg)](https://codecov.io/gh/drumser/deploy-migrations)
 
 ## Installation
 You can install the package via composer:
