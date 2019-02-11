@@ -1,7 +1,7 @@
 <?php
 
 
-class Version{version} extends \Videonow\DeployMigration\Lib\DeployMigration {
+class Version{version} extends \Quantick\DeployMigration\Lib\DeployMigration {
 
     public function getCommands(): array
     {

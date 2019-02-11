@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Commands;
+namespace Quantick\DeployMigration\Commands;
 
 
 use Illuminate\Console\Command;

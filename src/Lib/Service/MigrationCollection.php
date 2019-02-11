@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Lib\Service;
+namespace Quantick\DeployMigration\Lib\Service;
 
 
-use Drumser\DeployMigration\Lib\DeployMigration;
 use Illuminate\Support\Collection;
+use Quantick\DeployMigration\Lib\DeployMigration;
 
 class MigrationCollection extends Collection
 {

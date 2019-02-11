@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Commands;
+namespace Quantick\DeployMigration\Commands;
 
 
-use Drumser\DeployMigration\Lib\DeployMigration;
-use Drumser\DeployMigration\Lib\Service\Instantiator;
-use Drumser\DeployMigration\Lib\Service\Migrator;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Filesystem\Filesystem;
+use Quantick\DeployMigration\Lib\DeployMigration;
+use Quantick\DeployMigration\Lib\Service\Instantiator;
+use Quantick\DeployMigration\Lib\Service\Migrator;
 
 class RunDeployMigrationsCommand extends BaseDeployMigrationCommand
 {

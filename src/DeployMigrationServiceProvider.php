@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Drumser\DeployMigration;
+namespace Quantick\DeployMigration;
 
 
-use Drumser\DeployMigration\Commands\CreateMigrationCommand;
-use Drumser\DeployMigration\Commands\RunDeployMigrationsCommand;
 use Illuminate\Support\ServiceProvider;
+use Quantick\DeployMigration\Commands\CreateMigrationCommand;
+use Quantick\DeployMigration\Commands\RunDeployMigrationsCommand;
 
 class DeployMigrationServiceProvider extends ServiceProvider
 {

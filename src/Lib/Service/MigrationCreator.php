@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Lib\Service;
+namespace Quantick\DeployMigration\Lib\Service;
 
 
 class MigrationCreator

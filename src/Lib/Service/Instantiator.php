@@ -1,11 +1,11 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Lib\Service;
+namespace Quantick\DeployMigration\Lib\Service;
 
 
-use Drumser\DeployMigration\Lib\DeployMigration;
-use Symfony\Component\Finder\SplFileInfo;
+use Quantick\Component\Finder\SplFileInfo;
+use Quantick\DeployMigration\Lib\DeployMigration;
 
 class Instantiator
 {

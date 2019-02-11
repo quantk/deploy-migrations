@@ -1,10 +1,10 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Commands;
+namespace Quantick\DeployMigration\Commands;
 
 
-use Drumser\DeployMigration\Lib\Service\MigrationCreator;
+use Quantick\DeployMigration\Lib\Service\MigrationCreator;
 
 class CreateMigrationCommand extends BaseDeployMigrationCommand
 {

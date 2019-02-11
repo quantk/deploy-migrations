@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Lib;
+namespace Quantick\DeployMigration\Lib;
 
 
 abstract class DeployMigration

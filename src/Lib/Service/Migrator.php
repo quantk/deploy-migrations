@@ -1,15 +1,15 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Lib\Service;
+namespace Quantick\DeployMigration\Lib\Service;
 
 use Carbon\Carbon;
-use Drumser\DeployMigration\Lib\Console\Output;
 use Illuminate\Console\Command;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Container\Container;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
+use Quantick\DeployMigration\Lib\Console\Output;
 use Symfony\Component\Console\Input\ArrayInput;
 
 class Migrator

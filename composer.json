@@ -1,5 +1,5 @@
 {
-  "name": "drumser/deploy-migrations",
+  "name": "quantick/deploy-migrations",
   "description": "Deploy migration commands",
   "type": "library",
   "license": "MIT",
@@ -25,7 +25,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Drumser\\DeployMigration\\": "src"
+      "Quantick\\DeployMigration\\": "src"
     },
     "files": [
       "src/Helpers/functions.php"
@@ -33,7 +33,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Drumser\\DeployMigration\\Tests\\": "tests"
+      "Quantick\\DeployMigration\\Tests\\": "tests"
     }
   }
 }

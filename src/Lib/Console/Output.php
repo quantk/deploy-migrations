@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Drumser\DeployMigration\Lib\Console;
+namespace Quantick\DeployMigration\Lib\Console;
 
 
 class Output extends \Symfony\Component\Console\Output\Output
