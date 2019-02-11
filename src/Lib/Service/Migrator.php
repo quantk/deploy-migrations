@@ -108,7 +108,7 @@ class Migrator
                 $this->connection->rollBack();
 
                 $this->getInfoTableQuery()->insert([
-                    'migration' => get_class($migration),
+                    'migration' => $migration !== null ? get_class($migration) : null,
                     'output' => json_encode($outputs),
                     'error' => json_encode([
                         'trace' => $e->getTraceAsString(),
