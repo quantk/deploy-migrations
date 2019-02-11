@@ -102,8 +102,8 @@ class Migrator
 
                 $this->connection->commit();
             } catch (\Throwable $e) {
-                $migrationClass = $migration !== null ? get_class($migration) : null;
-                $commandClass   = get_class($currentCommand);
+                $migrationClass = $currentMigration !== null ? get_class($currentMigration) : null;
+                $commandClass   = $currentCommand !== null ? get_class($currentCommand) : null;
 
                 $deployCommandOutput->writeln('');
                 $deployCommandOutput->writeln(sprintf('<error>Error during %s migration; %s command</error>', $migrationClass, $commandClass));
