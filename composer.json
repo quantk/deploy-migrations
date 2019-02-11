@@ -1,0 +1,39 @@
+{
+  "name": "drumser/deploy-migrations",
+  "description": "Deploy migration commands",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Alexander Kladov",
+      "email": "mail@kladov.xyz"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": "^7.2",
+    "illuminate/console": "~5.7.20",
+    "illuminate/contracts": "~5.7.20",
+    "illuminate/filesystem": "~5.7.20",
+    "illuminate/database": "~5.7.20",
+    "illuminate/config": "~5.7.20",
+    "illuminate/support": "~5.7.20",
+    "symfony/finder": "^4.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^7.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "Drumser\\DeployMigration\\": "src"
+    },
+    "files": [
+      "src/Helpers/functions.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Drumser\\DeployMigration\\Tests\\": "tests"
+    }
+  }
+}

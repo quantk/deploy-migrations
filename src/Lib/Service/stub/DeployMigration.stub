@@ -1,0 +1,13 @@
+<?php
+
+
+class Version{version} extends \Videonow\DeployMigration\Lib\DeployMigration {
+
+    public function getCommands(): array
+    {
+        return [
+            // Place here your commands
+            // e.g. \App\Console\Commands\TestCommand::class => ['arg' => 'value', '--option' => true]
+        ];
+    }
+}
