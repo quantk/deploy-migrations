@@ -6,7 +6,7 @@
 You can install the package via composer:
 
 ```
-composer require spatie/laravel-activitylog
+composer require quantick/deploy-migrations
 ```
 
 The package will automatically register itself.
