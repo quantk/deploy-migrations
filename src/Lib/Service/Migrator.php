@@ -102,20 +102,24 @@ class Migrator
 
                 $this->connection->commit();
             } catch (\Throwable $e) {
+                $migrationClass = $migration !== null ? get_class($migration) : null;
+                $commandClass   = get_class($currentCommand);
+
                 $deployCommandOutput->writeln('');
-                $deployCommandOutput->writeln(sprintf('<error>Error during %s migration; %s command</error>', get_class($currentMigration), get_class($currentCommand)));
+                $deployCommandOutput->writeln(sprintf('<error>Error during %s migration; %s command</error>', $migrationClass, $commandClass));
                 $deployCommandOutput->writeln(sprintf('<error>%s</error>', (string)$e));
                 $this->connection->rollBack();
 
                 $this->getInfoTableQuery()->insert([
-                    'migration' => $migration !== null ? get_class($migration) : null,
+                    'migration' => $migrationClass,
                     'output' => json_encode($outputs),
                     'error' => json_encode([
                         'trace' => $e->getTraceAsString(),
                         'message' => $e->getMessage(),
                         'code' => $e->getCode(),
                         'file' => $e->getFile(),
-                        'line' => $e->getLine()
+                        'line' => $e->getLine(),
+                        'error_command' => $commandClass
                     ]),
                     'created_at' => Carbon::now()
                 ])
