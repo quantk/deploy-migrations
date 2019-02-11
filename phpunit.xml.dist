@@ -22,4 +22,7 @@
     <php>
         <env name="APP_NAME" value="deploy-migration"/>
     </php>
+    <logging>
+        <log type="coverage-clover" target="clover.xml"/>
+    </logging>
 </phpunit>
