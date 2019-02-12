@@ -36,5 +36,12 @@
     "psr-4": {
       "Quantick\\DeployMigration\\Tests\\": "tests"
     }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Quantick\\DeployMigration\\DeployMigrationServiceProvider"
+      ]
+    }
   }
 }
