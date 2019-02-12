@@ -6,6 +6,8 @@ class Version20190211093348 extends \Quantick\DeployMigration\Lib\DeployMigratio
 
     public function getCommands(): array
     {
-        // TODO: Implement getCommands() method.
+        return [
+            \Quantick\DeployMigration\Tests\Lib\Service\stub\TestCommand::class => []
+        ];
     }
 }

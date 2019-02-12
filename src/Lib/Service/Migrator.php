@@ -46,7 +46,9 @@ class Migrator
     public function run(Collection $migrations, OutputStyle $deployCommandOutput)
     {
         foreach ($migrations as $migration) {
-            $outputs = [];
+            $outputs          = [];
+            $currentMigration = $migration;
+            $currentCommand   = null;
 
             try {
                 $this->connection->beginTransaction();
@@ -59,7 +61,6 @@ class Migrator
                     continue;
                 }
 
-                $currentMigration = $migration;
                 $commands         = $migration->getCommands();
 
                 foreach ($commands as $commandName => $arguments) {
