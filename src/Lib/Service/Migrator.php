@@ -4,13 +4,11 @@
 namespace Quantick\DeployMigration\Lib\Service;
 
 use Carbon\Carbon;
-use Illuminate\Console\Command;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Container\Container;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
-use Quantick\DeployMigration\Lib\Console\Output;
-use Symfony\Component\Console\Input\ArrayInput;
+use Illuminate\Support\Facades\Artisan;
 
 class Migrator
 {
@@ -35,7 +33,7 @@ class Migrator
     )
     {
         $this->connection = $connection;
-        $this->container  = $container;
+        $this->container = $container;
     }
 
     /**
@@ -46,9 +44,9 @@ class Migrator
     public function run(Collection $migrations, OutputStyle $deployCommandOutput)
     {
         foreach ($migrations as $migration) {
-            $outputs          = [];
+            $outputs = [];
             $currentMigration = $migration;
-            $currentCommand   = null;
+            $currentCommand = null;
 
             try {
                 $this->connection->beginTransaction();
@@ -61,27 +59,17 @@ class Migrator
                     continue;
                 }
 
-                $commands         = $migration->getCommands();
+                $commands = $migration->getCommands();
 
                 foreach ($commands as $commandName => $arguments) {
                     $currentCommand = $commandName;
-                    /** @var Command $command */
-                    $command        = $this->container->get($commandName);
-                    $command->setLaravel($this->container);
 
-                    $input  = new ArrayInput($arguments);
-                    $output = new Output();
+                    $signature = $this->getSignature($commandName);
 
-                    // doing this shit for collecting output
-                    try {
-                        $command->run($input, $output);
-                    } catch (\Throwable $e) {
-                        $outputs[$commandName] = $output->getMessages();
+                    Artisan::call($signature, $arguments);
+                    $output = Artisan::output();
 
-                        throw $e;
-                    }
-
-                    $outputs[$commandName] = $output->getMessages();
+                    $outputs[$commandName] = $output;
                 }
 
                 $deployCommandOutput->progressAdvance();
@@ -96,13 +84,12 @@ class Migrator
                     'migration' => get_class($migration),
                     'output' => json_encode($outputs),
                     'created_at' => Carbon::now()
-                ])
-                ;
+                ]);
 
                 $this->connection->commit();
             } catch (\Throwable $e) {
                 $migrationClass = $currentMigration !== null ? get_class($currentMigration) : null;
-                $commandClass   = $currentCommand;
+                $commandClass = $currentCommand;
 
                 $deployCommandOutput->writeln('');
                 $deployCommandOutput->writeln(sprintf('<error>Error during %s migration; %s command</error>', $migrationClass, $commandClass));
@@ -121,13 +108,26 @@ class Migrator
                         'error_command' => $commandClass
                     ]),
                     'created_at' => Carbon::now()
-                ])
-                ;
+                ]);
 
                 throw $e;
             }
 
         }
+    }
+
+    /**
+     * @param string $className
+     * @return string|null
+     * @throws \ReflectionException
+     */
+    private function getSignature(string $className): ?string
+    {
+        $migrationReflection = new \ReflectionClass($className);
+        $properties = $migrationReflection->getDefaultProperties();
+        $signature = $properties['signature'] ?? $properties['name'] ?? null;
+
+        return $signature;
     }
 
     /**
