@@ -39,7 +39,7 @@ class Instantiator
             $this->requireMigration($migrationFile);
             $migration = $this->instantiateMigration($this->parseClassName($migrationFile));
 
-            $migrationCollection->add($migration);
+            $migrationCollection->addMigration($migration);
         }
 
         return $migrationCollection;

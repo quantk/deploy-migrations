@@ -14,7 +14,7 @@ class MigrationCollection extends Collection
         return new static();
     }
 
-    public function add(DeployMigration $migration)
+    public function addMigration(DeployMigration $migration)
     {
         $this->push($migration);
     }
