@@ -6,6 +6,7 @@ namespace Quantick\DeployMigration\Tests\Lib\Service;
 
 use Illuminate\Console\OutputStyle;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Connection;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Filesystem\Filesystem;
@@ -28,11 +29,13 @@ class MigratorTest extends TestCase
         $connection->expects(static::once())->method('beginTransaction');
         $connection->expects(static::once())->method('commit');
         $container = $this->createMock(Container::class);
+        $kernel    = $this->createMock(Kernel::class);
+        $kernel->method('output')->willReturn('');
 
         $instantiator = Instantiator::create((new Filesystem())->files(__DIR__ . '/stub/migrations'));
         $collection   = $instantiator->run();
 
-        $migrator = new Migrator($connection, $container);
+        $migrator = new Migrator($connection, $container, $kernel);
 
         $builder     = $this->createMock(Builder::class);
         $infoBuilder = $this->createMock(Builder::class);
@@ -63,17 +66,24 @@ class MigratorTest extends TestCase
         $output->progressFinish();
     }
 
+    /**
+     * @throws \ReflectionException
+     * @throws \Throwable
+     */
     public function testRunWithError()
     {
         $connection = $this->createMock(Connection::class);
         $connection->expects(static::once())->method('beginTransaction');
         $connection->expects(static::once())->method('rollBack');
         $container = $this->createMock(Container::class);
+        $kernel    = $this->createMock(Kernel::class);
+        $kernel->method('output')->willReturn('');
+        $kernel->method('call')->willThrowException(new \RuntimeException('exception'));
 
         $instantiator = Instantiator::create((new Filesystem())->files(__DIR__ . '/stub/migrations'));
         $collection   = $instantiator->run();
 
-        $migrator = new Migrator($connection, $container);
+        $migrator = new Migrator($connection, $container, $kernel);
 
         $builder     = $this->createMock(Builder::class);
         $infoBuilder = $this->createMock(Builder::class);
@@ -90,12 +100,7 @@ class MigratorTest extends TestCase
         $builder->method('where')->willReturn($builder);
         $builder->method('count')->willReturn(0);
 
-        $testCommand = $this->createMock(TestCommand::class);
-
-        $container->method('get')->with(TestCommand::class)->willReturn($testCommand);
-
         $output = new OutputStyle(new ArrayInput([]), new ConsoleOutput());
-        $testCommand->method('run')->willThrowException(new \RuntimeException('exception'));
         $output->progressStart(1);
 
         $container->method('make')->willReturn($output);

@@ -6,9 +6,9 @@ namespace Quantick\DeployMigration\Lib\Service;
 use Carbon\Carbon;
 use Illuminate\Console\OutputStyle;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Connection;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Artisan;
 
 class Migrator
 {
@@ -20,20 +20,27 @@ class Migrator
      * @var Container
      */
     private $container;
+    /**
+     * @var Kernel
+     */
+    private $kernel;
 
 
     /**
      * Migrator constructor.
      * @param Connection $connection
      * @param Container $container
+     * @param Kernel $kernel
      */
     public function __construct(
         Connection $connection,
-        Container $container
+        Container $container,
+        Kernel $kernel
     )
     {
         $this->connection = $connection;
-        $this->container = $container;
+        $this->container  = $container;
+        $this->kernel     = $kernel;
     }
 
     /**
@@ -66,8 +73,8 @@ class Migrator
 
                     $signature = $this->getSignature($commandName);
 
-                    Artisan::call($signature, $arguments);
-                    $output = Artisan::output();
+                    $this->kernel->call($signature, $arguments);
+                    $output = $this->kernel->output();
 
                     $outputs[$commandName] = $output;
                 }
@@ -125,9 +132,8 @@ class Migrator
     {
         $migrationReflection = new \ReflectionClass($className);
         $properties = $migrationReflection->getDefaultProperties();
-        $signature = $properties['signature'] ?? $properties['name'] ?? null;
 
-        return $signature;
+        return $properties['signature'] ?? $properties['name'] ?? null;
     }
 
     /**
