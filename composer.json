@@ -12,13 +12,13 @@
   "minimum-stability": "dev",
   "require": {
     "php": "^7.2",
-    "illuminate/console": "^5.7 || ^6.0",
-    "illuminate/contracts": "^5.7 || ^6.0",
-    "illuminate/filesystem": "^5.7 || ^6.0",
-    "illuminate/database": "^5.7 || ^6.0",
-    "illuminate/config": "^5.7 || ^6.0",
-    "illuminate/support": "^5.7 || ^6.0",
-    "symfony/finder": "^4.2",
+    "illuminate/console": "^5.7 || ^6.0 || ^7.0",
+    "illuminate/contracts": "^5.7 || ^6.0 || ^7.0",
+    "illuminate/filesystem": "^5.7 || ^6.0 || ^7.0",
+    "illuminate/database": "^5.7 || ^6.0 || ^7.0",
+    "illuminate/config": "^5.7 || ^6.0 || ^7.0",
+    "illuminate/support": "^5.7 || ^6.0 || ^7.0",
+    "symfony/finder": "^5.0",
     "ext-json": "*"
   },
   "require-dev": {
