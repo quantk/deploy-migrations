@@ -69,13 +69,8 @@ class Migrator
                 $commands = $migration->getCommands();
 
                 foreach ($commands as $commandName => $arguments) {
-                    $currentCommand = $commandName;
-
-                    $signature = $this->getSignature($commandName);
-
-                    $this->kernel->call($signature, $arguments);
-                    $output = $this->kernel->output();
-
+                    $currentCommand        = $arguments instanceof \Closure ? 'Closure#' . $commandName : $commandName;
+                    $output                = $this->handleCommand($commandName, $arguments);
                     $outputs[$commandName] = $output;
                 }
 
@@ -107,11 +102,11 @@ class Migrator
                     'migration' => $migrationClass,
                     'output' => json_encode($outputs),
                     'error' => json_encode([
-                        'trace' => $e->getTraceAsString(),
-                        'message' => $e->getMessage(),
-                        'code' => $e->getCode(),
-                        'file' => $e->getFile(),
-                        'line' => $e->getLine(),
+                        'trace'         => $e->getTraceAsString(),
+                        'message'       => $e->getMessage(),
+                        'code'          => $e->getCode(),
+                        'file'          => $e->getFile(),
+                        'line'          => $e->getLine(),
                         'error_command' => $commandClass
                     ]),
                     'created_at' => Carbon::now()
@@ -123,6 +118,29 @@ class Migrator
         }
     }
 
+    private function handleClosure(callable $closure)
+    {
+        return $this->container->call($closure);
+    }
+
+    private function handleLaravelCommand(string $commandName, array $arguments = [])
+    {
+        $signature = $this->getSignature($commandName);
+
+        $this->kernel->call($signature, $arguments);
+        return $this->kernel->output();
+    }
+
+    private function handleCommand($commandName, $arguments)
+    {
+        switch (true) {
+            case $arguments instanceof \Closure:
+                return $this->handleClosure($arguments);
+            default:
+                return $this->handleLaravelCommand($commandName, $arguments);
+        }
+    }
+
     /**
      * @param string $className
      * @return string|null
@@ -131,7 +149,7 @@ class Migrator
     private function getSignature(string $className): ?string
     {
         $migrationReflection = new \ReflectionClass($className);
-        $properties = $migrationReflection->getDefaultProperties();
+        $properties          = $migrationReflection->getDefaultProperties();
 
         return $properties['signature'] ?? $properties['name'] ?? null;
     }

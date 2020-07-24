@@ -41,6 +41,9 @@ class Version20190211093348 extends \Quantick\DeployMigration\Lib\DeployMigratio
         return [
             \App\Console\Commands\TestCommandWithArguments::class => ['arg' => 'value', '--option' => true],
             \App\Console\Commands\TestCommandWithoutArguments::class => [],
+            function (SomeService $service) {
+                return $service->doTheWork();
+            }
         ];
     }
 }

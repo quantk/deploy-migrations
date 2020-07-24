@@ -7,7 +7,10 @@ class Version20190211093348 extends \Quantick\DeployMigration\Lib\DeployMigratio
     public function getCommands(): array
     {
         return [
-            \Quantick\DeployMigration\Tests\Lib\Service\stub\TestCommand::class => []
+            \Quantick\DeployMigration\Tests\Lib\Service\stub\TestCommand::class => [],
+            function (\Illuminate\Contracts\Container\Container $container) {
+                return get_class($container);
+            }
         ];
     }
 }
