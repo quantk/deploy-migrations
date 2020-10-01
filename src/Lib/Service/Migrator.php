@@ -127,9 +127,9 @@ class Migrator
         }
     }
 
-    private function handleClosure(callable $closure): string
+    private function handleClosure(callable $closure): ?string
     {
-        /** @var string $output */
+        /** @var string|null $output */
         $output = $this->container->call($closure);
         return $output;
     }
@@ -152,10 +152,10 @@ class Migrator
     /**
      * @param string|int $commandName
      * @param array|callable $arguments
-     * @return string
+     * @return string|null
      * @throws \ReflectionException
      */
-    private function handleCommand($commandName, $arguments): string
+    private function handleCommand($commandName, $arguments): ?string
     {
         switch (true) {
             case $arguments instanceof \Closure:
