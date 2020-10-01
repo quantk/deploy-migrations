@@ -7,14 +7,14 @@ namespace Quantick\DeployMigration\Lib\Service;
 use Illuminate\Support\Collection;
 use Quantick\DeployMigration\Lib\DeployMigration;
 
-class MigrationCollection extends Collection
+final class MigrationCollection extends Collection
 {
-    public static function create()
+    public static function create(): MigrationCollection
     {
         return new static();
     }
 
-    public function addMigration(DeployMigration $migration)
+    public function addMigration(DeployMigration $migration): void
     {
         $this->push($migration);
     }
