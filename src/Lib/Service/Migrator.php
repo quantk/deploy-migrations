@@ -8,7 +8,9 @@ use Illuminate\Console\OutputStyle;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Quantick\DeployMigration\Lib\DeployMigration;
 
 class Migrator
 {
@@ -47,9 +49,11 @@ class Migrator
      * @param Collection $migrations
      * @param OutputStyle $deployCommandOutput
      * @throws \Throwable
+     * @psalm-suppress TooManyTemplateParams
      */
-    public function run(Collection $migrations, OutputStyle $deployCommandOutput)
+    public function run(Collection $migrations, OutputStyle $deployCommandOutput): void
     {
+        /** @var DeployMigration $migration */
         foreach ($migrations as $migration) {
             $outputs = [];
             $currentMigration = $migration;
@@ -68,6 +72,9 @@ class Migrator
 
                 $commands = $migration->getCommands();
 
+                /**
+                 * @var array|callable $arguments
+                 */
                 foreach ($commands as $commandName => $arguments) {
                     $currentCommand        = $arguments instanceof \Closure ? 'Closure#' . $commandName : $commandName;
                     $output                = $this->handleCommand($commandName, $arguments);
@@ -90,7 +97,9 @@ class Migrator
 
                 $this->connection->commit();
             } catch (\Throwable $e) {
-                $migrationClass = $currentMigration !== null ? get_class($currentMigration) : null;
+                /** @psalm-suppress DocblockTypeContradiction */
+                $migrationClass = $currentMigration !== null ? get_class($currentMigration) : '';
+                /** @var string $commandClass */
                 $commandClass = $currentCommand;
 
                 $deployCommandOutput->writeln('');
@@ -118,25 +127,44 @@ class Migrator
         }
     }
 
-    private function handleClosure(callable $closure)
+    private function handleClosure(callable $closure): ?string
     {
-        return $this->container->call($closure);
+        /** @var string|null $output */
+        $output = $this->container->call($closure);
+        return $output;
     }
 
-    private function handleLaravelCommand(string $commandName, array $arguments = [])
+    /**
+     * @param string $commandName
+     * @param array $arguments
+     * @return string
+     * @throws \ReflectionException
+     */
+    private function handleLaravelCommand(string $commandName, array $arguments = []): string
     {
+        /** @var string $signature */
         $signature = $this->getSignature($commandName);
 
         $this->kernel->call($signature, $arguments);
         return $this->kernel->output();
     }
 
-    private function handleCommand($commandName, $arguments)
+    /**
+     * @param string|int $commandName
+     * @param array|callable $arguments
+     * @return string|null
+     * @throws \ReflectionException
+     */
+    private function handleCommand($commandName, $arguments): ?string
     {
         switch (true) {
             case $arguments instanceof \Closure:
                 return $this->handleClosure($arguments);
             default:
+                /**
+                 * @var string $commandName
+                 * @var array $arguments
+                 */
                 return $this->handleLaravelCommand($commandName, $arguments);
         }
     }
@@ -148,25 +176,28 @@ class Migrator
      */
     private function getSignature(string $className): ?string
     {
+        /** @psalm-suppress ArgumentTypeCoercion */
         $migrationReflection = new \ReflectionClass($className);
         $properties          = $migrationReflection->getDefaultProperties();
 
-        return $properties['signature'] ?? $properties['name'] ?? null;
+        /** @var string|null $result */
+        $result = $properties['signature'] ?? $properties['name'] ?? null;
+        return $result;
     }
 
     /**
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      */
-    private function getTableQuery(): \Illuminate\Database\Query\Builder
+    private function getTableQuery(): Builder
     {
         return $this->connection->table('deploy_migrations');
     }
 
 
     /**
-     * @return \Illuminate\Database\Query\Builder
+     * @return Builder
      */
-    private function getInfoTableQuery(): \Illuminate\Database\Query\Builder
+    private function getInfoTableQuery(): Builder
     {
         return $this->connection->table('deploy_migrations_info');
     }

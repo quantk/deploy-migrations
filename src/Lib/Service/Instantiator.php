@@ -7,10 +7,11 @@ namespace Quantick\DeployMigration\Lib\Service;
 use Quantick\DeployMigration\Lib\DeployMigration;
 use Symfony\Component\Finder\SplFileInfo;
 
-class Instantiator
+final class Instantiator
 {
     /**
      * @var array
+     * @psalm-var array<SplFileInfo>
      */
     private $migrationFiles;
 
@@ -20,10 +21,11 @@ class Instantiator
      */
     private function __construct(array $migrationFiles)
     {
+        /** @var array<SplFileInfo> $migrationFiles */
         $this->migrationFiles = $migrationFiles;
     }
 
-    public static function create(array $migrationFiles = [])
+    public static function create(array $migrationFiles = []): Instantiator
     {
         return new static($migrationFiles);
     }
@@ -47,6 +49,7 @@ class Instantiator
 
     /**
      * @param SplFileInfo $fileInfo
+     * @psalm-suppress UnresolvableInclude
      */
     private function requireMigration(SplFileInfo $fileInfo): void
     {
@@ -57,8 +60,9 @@ class Instantiator
      * @param string $migrationClass
      * @return DeployMigration
      * @throws \ReflectionException
+     * @psalm-suppress ArgumentTypeCoercion
      */
-    private function instantiateMigration(string $migrationClass)
+    private function instantiateMigration(string $migrationClass): DeployMigration
     {
         $migrationReflection = new \ReflectionClass($migrationClass);
         /** @var DeployMigration $instance */
@@ -70,7 +74,7 @@ class Instantiator
      * @param SplFileInfo $fileInfo
      * @return string
      */
-    private function parseClassName(SplFileInfo $fileInfo)
+    private function parseClassName(SplFileInfo $fileInfo): string
     {
         return basename($fileInfo->getPathname(), '.php');
     }

@@ -6,9 +6,13 @@ namespace Quantick\DeployMigration\Lib\Console;
 
 class Output extends \Symfony\Component\Console\Output\Output
 {
+    /**
+     * @var array
+     * @psalm-var array<string>
+     */
     private $messages = [];
 
-    public function getMessages()
+    public function getMessages(): array
     {
         return $this->messages;
     }
@@ -19,7 +23,7 @@ class Output extends \Symfony\Component\Console\Output\Output
      * @param string $message A message to write to the output
      * @param bool $newline Whether to add a newline or not
      */
-    protected function doWrite($message, $newline)
+    protected function doWrite($message, $newline): void
     {
         $this->messages[] = $message;
     }

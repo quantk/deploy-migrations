@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<psalm
+        checkForThrowsDocblock="true"
+        checkForThrowsInGlobalScope="true"
+        ensureArrayStringOffsetsExist="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        totallyTyped="true"
+        resolveFromConfigFile="true"
+        useDocblockTypes="true"
+        allowPhpStormGenerics="true"
+        requireVoidReturnType="true"
+        ignoreInternalFunctionFalseReturn="false"
+        ignoreInternalFunctionNullReturn="false"
+        xmlns="https://getpsalm.org/schema/config"
+        xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
+>
+    <projectFiles>
+        <directory name="./src"/>
+        <ignoreFiles>
+            <directory name="vendor"/>
+            <file name="src/DeployMigrationServiceProvider.php"/>
+            <directory name="src/Commands"/>
+            <directory name="src/Config"/>
+            <directory name="src/migrations"/>
+        </ignoreFiles>
+    </projectFiles>
+
+    <issueHandlers>
+        <DeprecatedClass errorLevel="info"/>
+        <MissingClosureReturnType errorLevel="info"/>
+        <MissingConstructor errorLevel="info"/>
+        <PropertyNotSetInConstructor errorLevel="info"/>
+        <DeprecatedConstant errorLevel="info"/>
+        <DeprecatedFunction errorLevel="info"/>
+        <DeprecatedInterface errorLevel="info"/>
+        <DeprecatedMethod errorLevel="info"/>
+        <DeprecatedProperty errorLevel="info"/>
+        <DeprecatedTrait errorLevel="info"/>
+        <Trace errorLevel="info"/>
+    </issueHandlers>
+
+    <ignoreExceptions>
+        <!-- Unchecked exceptions only! -->
+        <class name="Error"/>
+        <class name="LogicException"/>
+        <class name="RuntimeException"/>
+        <!-- Todo clean up exceptions below when https://github.com/vimeo/psalm/issues/3286 is resolved -->
+        <class name="BadMethodCallException"/>
+        <class name="InvalidArgumentException"/>
+        <class name="OutOfBoundsException"/>
+        <class name="OutOfRangeException"/>
+        <class name="ReflectionException"/>
+        <class name="UnexpectedValueException"/>
+        <class name="Doctrine\Migrations\Exception\AbortMigration"/>
+        <class name="Doctrine\DBAL\ConnectionException"/>
+        <class name="Doctrine\DBAL\DBALException"/>
+        <class name="Doctrine\DBAL\Types\ConversionException"/>
+        <class name="HappyJob\Schema\Exception\FieldAccessException"/>
+        <class name="HappyJob\Schema\Exception\InvalidValueException"/>
+        <class name="HappyJob\Schema\Exception\OutOfRangeException"/>
+        <class name="Psr\Cache\InvalidArgumentException"/>
+        <class name="Psr\Container\ContainerExceptionInterface"/>
+        <class name="Psr\Container\NotFoundExceptionInterface"/>
+        <class name="Psr\Log\InvalidArgumentException"/>
+        <class name="Ramsey\Uuid\Exception\InvalidUuidStringException"/>
+        <class name="Symfony\Component\Console\Exception\InvalidArgumentException"/>
+        <class name="Symfony\Component\Console\Exception\LogicException"/>
+        <class name="Symfony\Component\Console\Exception\RuntimeException"/>
+        <class name="Symfony\Component\DependencyInjection\Exception\BadMethodCallException"/>
+        <class name="Symfony\Component\DependencyInjection\Exception\InvalidArgumentException"/>
+        <class name="Symfony\Component\DependencyInjection\Exception\OutOfBoundsException"/>
+        <class name="Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException"/>
+        <class name="Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException"/>
+        <class name="Symfony\Component\Filesystem\Exception\FileNotFoundException"/>
+        <class name="Symfony\Component\Filesystem\Exception\IOException"/>
+        <class name="Symfony\Component\Finder\Exception\DirectoryNotFoundException"/>
+        <class name="Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException"/>
+        <class name="Symfony\Component\Lock\Exception\LockReleasingException"/>
+        <class name="Symfony\Component\Messenger\Exception\HandlerFailedException"/>
+        <class name="Symfony\Component\Messenger\Exception\LogicException"/>
+        <class name="Symfony\Component\Messenger\Exception\MessageDecodingFailedException"/>
+        <class name="Symfony\Component\Serializer\Exception\BadMethodCallException"/>
+        <class name="Symfony\Component\Serializer\Exception\ExtraAttributesException"/>
+        <class name="Symfony\Component\Serializer\Exception\InvalidArgumentException"/>
+        <class name="Symfony\Component\Serializer\Exception\LogicException"/>
+        <class name="Symfony\Component\Serializer\Exception\RuntimeException"/>
+        <class name="Symfony\Component\Serializer\Exception\UnexpectedValueException"/>
+    </ignoreExceptions>
+</psalm>
