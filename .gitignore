@@ -3,3 +3,4 @@ vendor
 .idea
 clover.xml
 coverage.xml
+.phpunit.result.cache
