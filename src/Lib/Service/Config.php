@@ -4,13 +4,11 @@
 namespace Quantick\DeployMigration\Lib\Service;
 
 
-use Illuminate\Contracts\Container\BindingResolutionException;
-
 class Config
 {
     /**
      * @return string
-     * @throws BindingResolutionException
+     * @psalm-suppress UndefinedFunction
      */
     public function getMigrationsPath(): string
     {

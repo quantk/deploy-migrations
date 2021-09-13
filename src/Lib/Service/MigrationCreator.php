@@ -4,7 +4,6 @@
 namespace Quantick\DeployMigration\Lib\Service;
 
 
-use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
 
@@ -37,7 +36,7 @@ class MigrationCreator
     /**
      * return version path
      * @return string
-     * @throws FileNotFoundException|BindingResolutionException
+     * @throws FileNotFoundException
      */
     public function create(): string
     {
@@ -70,8 +69,10 @@ class MigrationCreator
      */
     private function prepareTemplate(string $templateContent, array $replaces): string
     {
-        /** @var string $content */
-        $content = str_replace(array_keys($replaces), array_values($replaces), $templateContent);
-        return $content;
+        return str_replace(
+            array_keys($replaces),
+            array_values($replaces),
+            $templateContent
+        );
     }
 }

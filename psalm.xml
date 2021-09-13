@@ -8,7 +8,6 @@
         resolveFromConfigFile="true"
         useDocblockTypes="true"
         allowPhpStormGenerics="true"
-        requireVoidReturnType="true"
         ignoreInternalFunctionFalseReturn="false"
         ignoreInternalFunctionNullReturn="false"
         xmlns="https://getpsalm.org/schema/config"
