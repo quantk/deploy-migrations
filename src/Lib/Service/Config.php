@@ -9,11 +9,12 @@ class Config
     /**
      * @return string
      * @psalm-suppress UndefinedFunction
+     * @psalm-suppress MixedInferredReturnType
+     * @psalm-suppress MixedReturnStatement
+     * @noinspection PhpUndefinedFunctionInspection
      */
     public function getMigrationsPath(): string
     {
-        /** @var string $path */
-        $path = config('deploy-migration.migration_path');
-        return $path;
+        return config('deploy-migration.migration_path');
     }
 }
