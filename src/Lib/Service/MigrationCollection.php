@@ -11,7 +11,7 @@ final class MigrationCollection extends Collection
 {
     public static function create(): MigrationCollection
     {
-        return new static();
+        return new MigrationCollection();
     }
 
     public function addMigration(DeployMigration $migration): void

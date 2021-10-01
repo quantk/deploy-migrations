@@ -27,7 +27,7 @@ final class Instantiator
 
     public static function create(array $migrationFiles = []): Instantiator
     {
-        return new static($migrationFiles);
+        return new Instantiator($migrationFiles);
     }
 
     /**

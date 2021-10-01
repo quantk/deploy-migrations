@@ -36,8 +36,8 @@ class Migrator
      */
     public function __construct(
         Connection $connection,
-        Container $container,
-        Kernel $kernel
+        Container  $container,
+        Kernel     $kernel
     )
     {
         $this->connection = $connection;
@@ -55,9 +55,9 @@ class Migrator
     {
         /** @var DeployMigration $migration */
         foreach ($migrations as $migration) {
-            $outputs = [];
+            $outputs          = [];
             $currentMigration = $migration;
-            $currentCommand = null;
+            $currentCommand   = null;
 
             try {
                 $this->connection->beginTransaction();
@@ -84,15 +84,14 @@ class Migrator
                 $deployCommandOutput->progressAdvance();
 
                 $tableQuery->insert([
-                    'migration' => get_class($migration),
-                    'created_at' => Carbon::now()
-
+                    'migration'  => get_class($migration),
+                    'created_at' => Carbon::now(),
                 ]);
 
                 $this->getInfoTableQuery()->insert([
-                    'migration' => get_class($migration),
-                    'output' => json_encode($outputs),
-                    'created_at' => Carbon::now()
+                    'migration'  => get_class($migration),
+                    'output'     => json_encode($outputs),
+                    'created_at' => Carbon::now(),
                 ]);
 
                 $this->connection->commit();
@@ -108,9 +107,9 @@ class Migrator
                 $this->connection->rollBack();
 
                 $this->getInfoTableQuery()->insert([
-                    'migration' => $migrationClass,
-                    'output' => json_encode($outputs),
-                    'error' => json_encode([
+                    'migration'  => $migrationClass,
+                    'output'     => json_encode($outputs),
+                    'error'      => json_encode([
                         'trace'         => $e->getTraceAsString(),
                         'message'       => $e->getMessage(),
                         'code'          => $e->getCode(),
@@ -127,11 +126,15 @@ class Migrator
         }
     }
 
+    /**
+     * @param callable $closure
+     * @return string|null
+     * @psalm-suppress MixedInferredReturnType
+     * @psalm-suppress MixedReturnStatement
+     */
     private function handleClosure(callable $closure): ?string
     {
-        /** @var string|null $output */
-        $output = $this->container->call($closure);
-        return $output;
+        return $this->container->call($closure);
     }
 
     /**
@@ -157,22 +160,23 @@ class Migrator
      */
     private function handleCommand($commandName, $arguments): ?string
     {
-        switch (true) {
-            case $arguments instanceof \Closure:
-                return $this->handleClosure($arguments);
-            default:
-                /**
-                 * @var string $commandName
-                 * @var array $arguments
-                 */
-                return $this->handleLaravelCommand($commandName, $arguments);
+        if ($arguments instanceof \Closure) {
+            return $this->handleClosure($arguments);
         }
+
+        /**
+         * @var string $commandName
+         * @var array $arguments
+         */
+        return $this->handleLaravelCommand($commandName, $arguments);
     }
 
     /**
      * @param string $className
      * @return string|null
      * @throws \ReflectionException
+     * @psalm-suppress MixedInferredReturnType
+     * @psalm-suppress MixedReturnStatement
      */
     private function getSignature(string $className): ?string
     {
@@ -180,9 +184,7 @@ class Migrator
         $migrationReflection = new \ReflectionClass($className);
         $properties          = $migrationReflection->getDefaultProperties();
 
-        /** @var string|null $result */
-        $result = $properties['signature'] ?? $properties['name'] ?? null;
-        return $result;
+        return $properties['signature'] ?? $properties['name'] ?? null;
     }
 
     /**
