@@ -36,8 +36,8 @@ class Migrator
      */
     public function __construct(
         Connection $connection,
-        Container $container,
-        Kernel $kernel
+        Container  $container,
+        Kernel     $kernel
     )
     {
         $this->connection = $connection;
@@ -55,9 +55,9 @@ class Migrator
     {
         /** @var DeployMigration $migration */
         foreach ($migrations as $migration) {
-            $outputs = [];
+            $outputs          = [];
             $currentMigration = $migration;
-            $currentCommand = null;
+            $currentCommand   = null;
 
             try {
                 $this->connection->beginTransaction();
@@ -84,14 +84,14 @@ class Migrator
                 $deployCommandOutput->progressAdvance();
 
                 $tableQuery->insert([
-                    'migration' => get_class($migration),
+                    'migration'  => get_class($migration),
                     'created_at' => Carbon::now()
 
                 ]);
 
                 $this->getInfoTableQuery()->insert([
-                    'migration' => get_class($migration),
-                    'output' => json_encode($outputs),
+                    'migration'  => get_class($migration),
+                    'output'     => json_encode($outputs),
                     'created_at' => Carbon::now()
                 ]);
 
@@ -108,9 +108,9 @@ class Migrator
                 $this->connection->rollBack();
 
                 $this->getInfoTableQuery()->insert([
-                    'migration' => $migrationClass,
-                    'output' => json_encode($outputs),
-                    'error' => json_encode([
+                    'migration'  => $migrationClass,
+                    'output'     => json_encode($outputs),
+                    'error'      => json_encode([
                         'trace'         => $e->getTraceAsString(),
                         'message'       => $e->getMessage(),
                         'code'          => $e->getCode(),
@@ -138,14 +138,10 @@ class Migrator
      * @param string $commandName
      * @param array $arguments
      * @return string
-     * @throws \ReflectionException
      */
     private function handleLaravelCommand(string $commandName, array $arguments = []): string
     {
-        /** @var string $signature */
-        $signature = $this->getSignature($commandName);
-
-        $this->kernel->call($signature, $arguments);
+        $this->kernel->call($commandName, $arguments);
         return $this->kernel->output();
     }
 
@@ -153,7 +149,6 @@ class Migrator
      * @param string|int $commandName
      * @param array|callable $arguments
      * @return string|null
-     * @throws \ReflectionException
      */
     private function handleCommand($commandName, $arguments): ?string
     {
@@ -167,22 +162,6 @@ class Migrator
                  */
                 return $this->handleLaravelCommand($commandName, $arguments);
         }
-    }
-
-    /**
-     * @param string $className
-     * @return string|null
-     * @throws \ReflectionException
-     */
-    private function getSignature(string $className): ?string
-    {
-        /** @psalm-suppress ArgumentTypeCoercion */
-        $migrationReflection = new \ReflectionClass($className);
-        $properties          = $migrationReflection->getDefaultProperties();
-
-        /** @var string|null $result */
-        $result = $properties['signature'] ?? $properties['name'] ?? null;
-        return $result;
     }
 
     /**
