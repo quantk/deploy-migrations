@@ -127,11 +127,15 @@ class Migrator
         }
     }
 
+    /**
+     * @param callable $closure
+     * @return string|null
+     * @psalm-suppress MixedInferredReturnType
+     * @psalm-suppress MixedReturnStatement
+     */
     private function handleClosure(callable $closure): ?string
     {
-        /** @var string|null $output */
-        $output = $this->container->call($closure);
-        return $output;
+        return $this->container->call($closure);
     }
 
     /**
@@ -152,16 +156,15 @@ class Migrator
      */
     private function handleCommand($commandName, $arguments): ?string
     {
-        switch (true) {
-            case $arguments instanceof \Closure:
-                return $this->handleClosure($arguments);
-            default:
-                /**
-                 * @var string $commandName
-                 * @var array $arguments
-                 */
-                return $this->handleLaravelCommand($commandName, $arguments);
+        if ($arguments instanceof \Closure) {
+            return $this->handleClosure($arguments);
         }
+
+        /**
+         * @var string $commandName
+         * @var array $arguments
+         */
+        return $this->handleLaravelCommand($commandName, $arguments);
     }
 
     /**
